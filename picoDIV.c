@@ -8,6 +8,9 @@
     and GPIO25 - LED pin, which then starts to blink.
 
     SPDX-License-Identifier: BSD-3-Clause
+
+    Version:
+    02-May-2021  Marek Dorsic (.md)
 */
 
 #include "pico/stdlib.h"
