@@ -1,27 +1,34 @@
 .program picodiv
  
-; Divides the input frequency by factor 10^7, 10MHz to 1Hz.
-; System clock has to be driven from 10MHz external clock through GPIO
+; Divides the input frequency by factor given from main program
+; Expects to 32 bit integeters 
+;   - number of clk_sys pulses for the HIGH portion of the output pulse (stored to ISR register)
+;   - number of clk_sys pulses for the LOW portion of the output pulse (stored to Y register)
 ;
-; Copyright (c) 2020 Raspberry Pi (Trading) Ltd.
-;
+; Based on the Raspberry Pi Pico pio_blink example
 ; SPDX-License-Identifier: BSD-3-Clause
-;
 
-; SET pin 0 should be mapped to your LED GPIO
+; Version:
+; 07-May-2021  Marek Dorsic (.md)
 
-    pull block
-    out y, 32
+
+    pull block   ; Wait for the main program to write number of HIGH cycles
+    out x, 32    ; Read the number of HIGH clock cycles to X
+    mov isr, x   ; Store the HIGH clock cycles to ISR register for later use
+    pull block   ; Wait for the main program to write number of LOW cycles
+    out y, 32    ; Read number of LOW clock cycles to Y and store for later use
+
 .wrap_target
-    mov x, y
-    set pins, 1   ; Turn LED on
+    mov x, isr
+    set pins, 1   ; Turn PINS (LED) on
 lp1:
     jmp x-- lp1   ; Delay for (x + 1) cycles, x is a 32 bit number
     mov x, y
-    set pins, 0   ; Turn LED off
+    set pins, 0   ; Turn PINS (LED) off
 lp2:
     jmp x-- lp2   ; Delay for the same number of cycles again
 .wrap             ; Blink forever!
+
 
 
 % c-sdk {
