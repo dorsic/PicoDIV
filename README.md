@@ -5,7 +5,17 @@ Divides the input frequency by factor 10^7, 10MHz to 1Hz using PIO.
 System clock has to be driven from 10MHz external clock through GPIO.
 Based on the [pio_blink example](https://github.com/raspberrypi/pico-examples/tree/master/pio/pio_blink).
 
-Connect 10 MHz 3.3V input signal to GPIO20 (pin 26). Output 1 Hz, 50-50 duty cycle signal is generated on GPIO0 (pin 1) and GPIO25 - LED pin, which then starts to blink.
+Connect 10 MHz 0-3.3V input signal to GPIO20 (pin 26). Output signals will be following:
+
+- GPIO0 (pin 1) - 1 PPS, 10 ms long pulses, 
+- GPIO25 (onboard LED) - 1 PPS,
+- GPIO21 - 1 MHz 0-3.3V square wave,
+- GPIO15 - 100 kHz 0-3.3V square wave.
+
+![PicoDIV_pinout](PicoDIV_pinout.png)
+
+## PicoDIV_PWM
+This is an example to use the internal PWM module to count pulses and generate output divided frequency. However the output pins are also driven by clk_sys. So using the defualt 125 MHz internal clock frequency leads to 8ns jitter on the output pulses.
 
 ### Pico programming
 Connect the Pico while holding down the button on the Pico board to USB.
