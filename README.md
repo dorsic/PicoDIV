@@ -13,11 +13,14 @@ Output signals will be following:
 - OUT_B  - GPIO18 (pin 24) - 100 kHz 0-3.3V square wave,
 - UNSYNC - GPIO21 - unsynced 1 PSS from RP2040 clock divider.
 
-GPIO19 is used to syncrhonized outputs to external sync signal. If synchronization not required connect GPIO20 and GPIO19 for immediate startup. Synchronization is done only once upon start. After that the outputs are directed only by system clock.
-
 To use the onboard TXCO as system clock, comment out ```EXT_CLK```.
 
 ![PicoDIV_pinout](PicoDIV_pinout.png)
+
+GPIO19 is used to syncrhonized outputs to external sync signal. If synchronization not required connect GPIO20 and GPIO19 for immediate startup. Synchronization is done only once upon start. After that the outputs are directed only by system clock. The output can be fine tuned with 100ns steps (@10MHz system clock) to sync signal with ```SYNC_TUNE```.
+
+![Output_sync](Output_sync.png)
+
 
 
 ## PicoDIV_PWM
