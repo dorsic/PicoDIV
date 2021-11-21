@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.13)
 include(/Users/dorsic/Development/Pico/pico-sdk/external/pico_sdk_import.cmake)
 
 project(picoDIV)
@@ -14,6 +14,8 @@ target_link_libraries(picoDIV
     pico_stdlib
     hardware_clocks
     hardware_pio
+    hardware_pll
+    hardware_xosc
 )
 
 pico_enable_stdio_usb(picoDIV 0)

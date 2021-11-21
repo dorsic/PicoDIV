@@ -12,21 +12,26 @@
 ; 07-May-2021  Marek Dorsic (.md)
 
 
-    pull block   ; Wait for the main program to write number of HIGH cycles
-    out x, 32    ; Read the number of HIGH clock cycles to X
-    mov isr, x   ; Store the HIGH clock cycles to ISR register for later use
-    pull block   ; Wait for the main program to write number of LOW cycles
-    out y, 32    ; Read number of LOW clock cycles to Y and store for later use
+    pull block      ; Wait for the main program to write number of HIGH cycles
+    out x, 32       ; Read the number of HIGH clock cycles to X
+    mov isr, x      ; Store the HIGH clock cycles to ISR register for later use
+    pull block      ; Wait for the main program to write number of LOW cycles
+    out y, 32       ; Read number of LOW clock cycles to Y and store for later use
+    pull block      ; Read number of first period after sync pulse (typicaly X-1)
+    out x, 32       ; Initialize x register for counting clock cycles    
+
+    wait 1 GPIO 19 ; wait for the input sync pulse
+
 
 .wrap_target
-    mov x, isr
-    set pins, 1   ; Turn PINS (LED) on
+    set pins, 0   ; Turn PINS (LED) on
 lp1:
     jmp x-- lp1   ; Delay for (x + 1) cycles, x is a 32 bit number
-    mov x, y
-    set pins, 0   ; Turn PINS (LED) off
+    mov x, isr
+    set pins, 1   ; Turn PINS (LED) off
 lp2:
     jmp x-- lp2   ; Delay for the same number of cycles again
+    mov x, y
 .wrap             ; Blink forever!
 
 
